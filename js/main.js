@@ -116,6 +116,7 @@ jQuery(document).ready(function ($) {
 	}
 
 	// Open and closing animation sequence 
+	// animateQuickView(selectedImage, sliderFinalWidth, maxQuickWidth, 'open');
 	function animateQuickView(image, finalWidth, maxQuickWidth, animationType) {
 		//store some image data (width, top position, ...)
 		//store window data to calculate quick view panel position
@@ -137,74 +138,104 @@ jQuery(document).ready(function ($) {
 
 		if (windowWidth < 768 && windowWidth > 479) {
 			windowS = windowWidth
-			console.log('S');
 		} else if (windowWidth < 1024 && windowWidth > 767) {
 			windowM = windowWidth
-			console.log('M');
 		} else if (windowWidth < 1170 && windowWidth > 1023) {
 			windowL = windowWidth
-			console.log('L');
 		} else if (windowWidth > 1169) {
 			windowXL = windowWidth
-			console.log('XL');
 		} else {
 			windowXS = windowWidth
-			console.log('XS');
 		}
 
-
-		// if opening animation sequence
 		if (animationType == 'open') {
-			//hide the image in the gallery/create empty-box
-			parentListItem.addClass('empty-box');
-			//Initial animation sequence before modal opens (size/location of grid img)
-			//place the quick view over the image gallery and give it the dimension of the gallery image
-			$('.cd-quick-view').css({
+			// Check different sizing of window
+			if (windowWidth > 1023) {
+				console.log('large');
+			} else if (windowWidth < 1024 && windowWidth > 767) {
+				console.log('medium');
+				// widthSelected = (container width) * mq css width - margin
+				widthSelected = (windowWidth * 0.98) * 0.48 - ((windowWidth * 0.98) * 0.04);
+				console.log(widthSelected);
+				finalTop = 50;
+				quickViewLeft = 50;
+				quickViewWidth = windowWidth - 100;
+			} else {
+				console.log('small');
+				widthSelected = (windowWidth * 0.98);
+				finalTop = 20;
+				finalTop = 20;
+				quickViewLeft = 20;
+				quickViewWidth = windowWidth - 40;
+			}
+			openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth);
+		} else {
+			if (windowWidth > 1023) {
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+			} else if (windowWidth < 1024 && windowWidth > 767) {
+				console.log('medium');
+				widthSelected = (windowWidth * 0.98) * 0.48 - ((windowWidth * 0.98) * 0.04);
+				finalTop = 50;
+				quickViewLeft = 50;
+				quickViewWidth = windowWidth - 100;
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+			} else {
+				console.log('small');
+				widthSelected = (windowWidth * 0.98);
+				finalTop = 20;
+				finalTop = 20;
+				quickViewLeft = 20;
+				quickViewWidth = windowWidth - 40;
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+			}
+
+		}
+	}
+
+	function openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth) {
+		//hide the image in the gallery/create empty-box
+		parentListItem.addClass('empty-box');
+		//Initial animation sequence before modal opens (size/location of grid img)
+		//place the quick view over the image gallery and give it the dimension of the gallery image
+		$('.cd-quick-view').css({
+			"top": topSelected,
+			"left": leftSelected,
+			"width": widthSelected,
+		}).velocity({
+			//animate the quick view: animate its width and center it in the viewport
+			//during this animation, only the slider image is visible
+			'top': finalTop + 'px',
+			'left': finalLeft + 'px',
+			'width': finalWidth + 'px',
+		}, 1000, [400, 20], function () {
+			//animate the quick view: animate its width to the final value
+			$('.cd-quick-view').addClass('animate-width').velocity({
+				'left': quickViewLeft + 'px',
+				'width': quickViewWidth + 'px',
+			}, 300, 'ease', function () {
+				//show quick view content
+				$('.cd-quick-view').addClass('add-content');
+			});
+		}).addClass('is-visible');
+	}
+
+	function closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected) {
+		//close the quick view reverting the animation
+		$('.cd-quick-view').removeClass('add-content').velocity({
+			'top': finalTop + 'px',
+			'left': finalLeft + 'px',
+			'width': finalWidth + 'px',
+		}, 300, 'ease', function () {
+			$('body').removeClass('overlay-layer');
+			$('.cd-quick-view').removeClass('animate-width').velocity({
 				"top": topSelected,
 				"left": leftSelected,
 				"width": widthSelected,
-			}).velocity({
-				//animate the quick view: animate its width and center it in the viewport
-				//during this animation, only the slider image is visible
-				'top': finalTop + 'px',
-				'left': finalLeft + 'px',
-				'width': finalWidth + 'px',
-			}, 1000, [400, 20], function () {
-				//animate the quick view: animate its width to the final value
-				// Animate on L & XL
-				if (windowWidth === windowXL || windowWidth === windowL) {
-					console.log(windowWidth);
-					$('.cd-quick-view').addClass('animate-width').velocity({
-						'left': quickViewLeft + 'px',
-						'width': quickViewWidth + 'px',
-					}, 300, 'ease', function () {
-						//show quick view content
-						$('.cd-quick-view').addClass('add-content');
-					});
-				} else if (windowWidth === windowM) {
-					console.log('medium');
-				} else {
-					console.log('sm, xs');
-				}
-			}).addClass('is-visible');
-		} else {
-			//close the quick view reverting the animation
-			$('.cd-quick-view').removeClass('add-content').velocity({
-				'top': finalTop + 'px',
-				'left': finalLeft + 'px',
-				'width': finalWidth + 'px',
-			}, 300, 'ease', function () {
-				$('body').removeClass('overlay-layer');
-				$('.cd-quick-view').removeClass('animate-width').velocity({
-					"top": topSelected,
-					"left": leftSelected,
-					"width": widthSelected,
-				}, 500, 'ease', function () {
-					$('.cd-quick-view').removeClass('is-visible');
-					parentListItem.removeClass('empty-box');
-				});
+			}, 500, 'ease', function () {
+				$('.cd-quick-view').removeClass('is-visible');
+				parentListItem.removeClass('empty-box');
 			});
-		}
+		});
 	}
 
 	function closeNoAnimation(image, finalWidth, maxQuickWidth) {

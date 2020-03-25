@@ -254,14 +254,25 @@ header h1 {
 
 .cd-slider-wrapper {
   position: relative;
-  display: inline-block;
-  float: left;
 }
 
 .cd-slider-wrapper::after {
   clear: both;
   content: "";
   display: table;
+}
+
+@media only screen and (min-width: 1024px) {
+  .cd-slider-wrapper {
+    display: inline-block;
+    float: left;
+  }
+}
+
+@media only screen and (min-width: 0px) {
+  .cd-slider-wrapper {
+    display: block;
+  }
 }
 
 .cd-slider {

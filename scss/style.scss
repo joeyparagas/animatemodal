@@ -251,9 +251,17 @@ header {
 
 .cd-slider-wrapper {
 	position: relative;
-	display: inline-block;
-	float: left;
 	@include clearfix;
+
+		@include MQ(L) {
+			display: inline-block;
+			float: left;	
+		}
+
+		@include MQ(XS) {
+			display: block;
+			// float: left;			
+		}
 }
 
 .cd-slider {
