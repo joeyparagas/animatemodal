@@ -44,7 +44,7 @@ body {
 	}
 
 	// Enabled for smaller Screen - Default L
-	@include MQ(S) {
+	@include MQ(XS) {
 		&.overlay-layer::after {
 			visibility: visible;
 			opacity: 1;
@@ -137,6 +137,14 @@ header {
 		display: none;
 	}
 
+	// Change width to 400px instead of 100% and center contents
+	@include MQ(MAXS) {
+		> img { 
+			width: 400px;
+			text-align: center;
+			margin: auto;
+		}
+	}
 	@include MQ(M) {
 		@include column(.48);
 		margin: 0 4% 2em 0;
@@ -172,6 +180,17 @@ header {
 			background-color: darken($color-3, 5%);
 		}
 	}
+
+	// Account for empty-box with new 400px width change
+	@include MQ(MAXS) {
+		&.empty-box::after {
+			right: 0;
+			width: 400px;
+			text-align: center;
+			margin: auto;
+		}
+	}
+	
 }
 
 .cd-trigger {
@@ -181,6 +200,8 @@ header {
 	width: 100%;
 	bottom: 0;
 	left: 0;
+	right: 0;
+	margin: auto;
 	background: rgba(#000, .1);
 	text-align: center;
 	@include font-smoothing;
@@ -192,6 +213,15 @@ header {
 
 	.no-touch &:hover {
 		background: rgba(#000, .2);
+	}
+	
+	// Account for new 400px width and center contents
+	@include MQ(MAXS) {
+		width: 400px;
+	}
+
+	@media only screen and (max-width: 446px) {
+		width: 100%;
 	}
 
 	@include MQ(L) {
@@ -220,7 +250,7 @@ header {
 	/* quick view non available on small devices */
 	display: none;
 
-	@include MQ(S) {
+	@include MQ(XS) {
 		display: block;
 		position: fixed;
 		max-width: 900px;
@@ -258,7 +288,7 @@ header {
 			float: left;	
 		}
 
-		@include MQ(XS) {
+		@include MQ(MAXXS) {
 			display: block;
 			// float: left;			
 		}

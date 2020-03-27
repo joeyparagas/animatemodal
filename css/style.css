@@ -33,7 +33,7 @@ body::after {
   transition: opacity .3s 0s, visibility 0s .3s;
 }
 
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 0px) {
   body.overlay-layer::after {
     visibility: visible;
     opacity: 1;
@@ -139,6 +139,14 @@ header h1 {
   display: none;
 }
 
+@media only screen and (max-width: 768px) {
+  .cd-item > img {
+    width: 400px;
+    text-align: center;
+    margin: auto;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .cd-item {
     width: 48%;
@@ -176,6 +184,15 @@ header h1 {
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .cd-item.empty-box::after {
+    right: 0;
+    width: 400px;
+    text-align: center;
+    margin: auto;
+  }
+}
+
 .cd-trigger {
   position: absolute;
   height: 50px;
@@ -183,6 +200,8 @@ header h1 {
   width: 100%;
   bottom: 0;
   left: 0;
+  right: 0;
+  margin: auto;
   background: rgba(0, 0, 0, 0.1);
   text-align: center;
   -webkit-font-smoothing: antialiased;
@@ -192,6 +211,18 @@ header h1 {
 
 .no-touch .cd-trigger:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .cd-trigger {
+    width: 400px;
+  }
+}
+
+@media only screen and (max-width: 446px) {
+  .cd-trigger {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -223,7 +254,7 @@ header h1 {
   display: none;
 }
 
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 0px) {
   .cd-quick-view {
     display: block;
     position: fixed;
@@ -269,7 +300,7 @@ header h1 {
   }
 }
 
-@media only screen and (min-width: 0px) {
+@media only screen and (max-width: 480px) {
   .cd-slider-wrapper {
     display: block;
   }

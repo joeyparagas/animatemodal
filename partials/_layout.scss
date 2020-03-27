@@ -9,8 +9,14 @@ $XL:   1170px;
 // media queries
 
 @mixin MQ($canvas) {
-  @if $canvas == XS {
-   @media only screen and (min-width: $XS) { @content; } 
+  @if $canvas == MAXXS {
+   @media only screen and (max-width: $S) { @content; } 
+  }
+  @else if $canvas == MAXS {
+    @media only screen and (max-width: $M) { @content; } 
+  }
+  @else if $canvas == XS {
+    @media only screen and (min-width: $XS) { @content; } 
   }
   @else if $canvas == S {
     @media only screen and (min-width: $S) { @content; } 

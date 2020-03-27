@@ -162,7 +162,8 @@ jQuery(document).ready(function ($) {
 				quickViewWidth = windowWidth - 100;
 			} else {
 				console.log('small');
-				widthSelected = (windowWidth * 0.98);
+				console.log(widthSelected);
+				widthSelected = windowWidth;
 				finalTop = 20;
 				finalTop = 20;
 				quickViewLeft = 20;
@@ -181,7 +182,7 @@ jQuery(document).ready(function ($) {
 				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
 			} else {
 				console.log('small');
-				widthSelected = (windowWidth * 0.98);
+				widthSelected = (windowWidth);
 				finalTop = 20;
 				finalTop = 20;
 				quickViewLeft = 20;
