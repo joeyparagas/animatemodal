@@ -139,7 +139,7 @@ header h1 {
   display: none;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   .cd-item > img {
     width: 400px;
     text-align: center;
@@ -184,7 +184,7 @@ header h1 {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   .cd-item.empty-box::after {
     right: 0;
     width: 400px;
@@ -213,7 +213,7 @@ header h1 {
   background: rgba(0, 0, 0, 0.2);
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   .cd-trigger {
     width: 400px;
   }
@@ -300,7 +300,7 @@ header h1 {
   }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 479) {
   .cd-slider-wrapper {
     display: block;
   }
@@ -308,28 +308,39 @@ header h1 {
 
 .cd-slider {
   float: left;
+  width: 100%;
 }
 
 .cd-slider li {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+  overflow: hidden;
+  height: 450px;
 }
 
-.cd-slider li img {
-  display: block;
-  width: 100%;
-  max-width: 400px;
+.add-content .cd-slider li {
+  margin-right: 0;
 }
 
-.cd-slider li.selected {
-  position: relative;
-  z-index: 3;
-}
-
-.add-content .cd-slider {
-  margin-right: 3em;
+@media only screen and (min-width: 1024px) {
+  .cd-slider li {
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .cd-slider li img {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+  }
+  .cd-slider li.selected {
+    width: 100%;
+    z-index: 3;
+  }
+  .cd-slider li .container-img {
+    position: relative;
+  }
+  .add-content .cd-slider {
+    margin-right: 3em;
+  }
 }
 
 .cd-slider-navigation {
@@ -355,7 +366,7 @@ header h1 {
 
 .cd-slider-navigation li:last-child {
   /* equal to the .cd-slider-wrapper margin-right */
-  right: 3em;
+  right: 0;
 }
 
 .cd-slider-navigation li a {
@@ -419,13 +430,26 @@ header h1 {
   transform: translateY(7px) rotate(45deg);
 }
 
+@media only screen and (min-width: 1024px) {
+  .cd-slider-navigation li:last-child {
+    /* equal to the .cd-slider-wrapper margin-right */
+    right: 3em;
+  }
+}
+
 .cd-item-info {
   position: absolute;
-  padding: 3em 3em 3em 0;
+  padding: 1em;
   visibility: hidden;
   opacity: 0;
   -webkit-transition: opacity .3s, visibility 0s;
   transition: opacity .3s, visibility 0s;
+}
+
+@media only screen and (min-width: 1024px) {
+  .cd-item-info {
+    padding: 3em 3em 3em 0;
+  }
 }
 
 .cd-item-info h2 {

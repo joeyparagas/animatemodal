@@ -121,26 +121,28 @@ jQuery(document).ready(function ($) {
 		//store some image data (width, top position, ...)
 		//store window data to calculate quick view panel position
 		var parentListItem = image.parent('.cd-item'),								// empty-box li tag
-			topSelected = image.offset().top - $(window).scrollTop(),		// how far from top is eb
-			leftSelected = image.offset().left,													// how far left is eb
-			widthSelected = image.width(),															// width of eb
-			heightSelected = image.height(),														// height
+			topSelected = image.offset().top - $(window).scrollTop(),		// how far from top is img
+			leftSelected = image.offset().left,													// how far left is img
+			widthSelected = image.width(),															// img width
+			heightSelected = image.height(),														// img height
 			windowWidth = $(window).width(),
 			windowHeight = $(window).height(),
 			finalLeft = (windowWidth - finalWidth) / 2,									// width of window - width of slider /2
-			finalHeight = finalWidth * heightSelected / widthSelected,	// slider width * eb height / eb width
+			finalHeight = finalWidth * heightSelected / widthSelected,	// slider width * img height / img width
 			finalTop = (windowHeight - finalHeight) / 2,								// strange ratio to calculate top
 			// if 80% of window < max modal width, then = 80% of window, else modal max width
 			quickViewWidth = (windowWidth * .8 < maxQuickWidth) ? windowWidth * .8 : maxQuickWidth,
-			// Center modal
-			quickViewLeft = (windowWidth - quickViewWidth) / 2,
+			// initialize modal height
+			quickViewHeight = null;
+		// Center modal
+		quickViewLeft = (windowWidth - quickViewWidth) / 2,
 			windowXS = windowS = windowM = windowL = windowXL = 0;
 
 		if (windowWidth < 768 && windowWidth > 479) {
 			windowS = windowWidth
-		} else if (windowWidth < 1024 && windowWidth > 767) {
+		} else if (windowWidth < 1023 && windowWidth > 767) {
 			windowM = windowWidth
-		} else if (windowWidth < 1170 && windowWidth > 1023) {
+		} else if (windowWidth < 1170 && windowWidth > 1024) {
 			windowL = windowWidth
 		} else if (windowWidth > 1169) {
 			windowXL = windowWidth
@@ -150,50 +152,60 @@ jQuery(document).ready(function ($) {
 
 		if (animationType == 'open') {
 			// Check different sizing of window
-			if (windowWidth > 1023) {
+			if (windowWidth >= 1024) {
 				console.log('large');
-			} else if (windowWidth < 1024 && windowWidth > 767) {
+				quickViewWidth = 900;
+				quickViewHeight = 450;
+			} else if (windowWidth < 1023 && windowWidth > 767) {
 				console.log('medium');
 				// widthSelected = (container width) * mq css width - margin
 				widthSelected = (windowWidth * 0.98) * 0.48 - ((windowWidth * 0.98) * 0.04);
 				console.log(widthSelected);
-				finalTop = 50;
-				quickViewLeft = 50;
-				quickViewWidth = windowWidth - 100;
+				finalTop = 40;
+				quickViewLeft = finalTop;
+				quickViewWidth = windowWidth - (quickViewLeft * 2);
+				// modal height for medium screen
+				quickViewHeight = windowHeight - (2 * finalTop);
+				console.log("modal height: ", quickViewHeight);
 			} else {
 				console.log('small');
 				console.log(widthSelected);
-				widthSelected = windowWidth;
+				// 400px is max size of image in css
+				widthSelected = 400;
 				finalTop = 20;
-				finalTop = 20;
-				quickViewLeft = 20;
-				quickViewWidth = windowWidth - 40;
+				quickViewLeft = finalTop;
+				quickViewWidth = windowWidth - (quickViewLeft * 2);
+				quickViewHeight = windowHeight - (2 * finalTop);
+				console.log("modal height: ", quickViewHeight);
 			}
-			openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth);
+			openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth, quickViewHeight);
 		} else {
 			if (windowWidth > 1023) {
-				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+				quickViewHeight = 450;
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected, quickViewHeight);
 			} else if (windowWidth < 1024 && windowWidth > 767) {
 				console.log('medium');
 				widthSelected = (windowWidth * 0.98) * 0.48 - ((windowWidth * 0.98) * 0.04);
 				finalTop = 50;
 				quickViewLeft = 50;
 				quickViewWidth = windowWidth - 100;
-				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+				quickViewHeight = finalWidth;
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected, quickViewHeight);
 			} else {
 				console.log('small');
-				widthSelected = (windowWidth);
+				widthSelected = 400;
 				finalTop = 20;
 				finalTop = 20;
 				quickViewLeft = 20;
 				quickViewWidth = windowWidth - 40;
-				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected);
+				quickViewHeight = finalWidth;
+				closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected, quickViewHeight);
 			}
 
 		}
 	}
 
-	function openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth) {
+	function openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth, quickViewHeight) {
 		//hide the image in the gallery/create empty-box
 		parentListItem.addClass('empty-box');
 		//Initial animation sequence before modal opens (size/location of grid img)
@@ -213,6 +225,7 @@ jQuery(document).ready(function ($) {
 			$('.cd-quick-view').addClass('animate-width').velocity({
 				'left': quickViewLeft + 'px',
 				'width': quickViewWidth + 'px',
+				'height': quickViewHeight + 'px',
 			}, 300, 'ease', function () {
 				//show quick view content
 				$('.cd-quick-view').addClass('add-content');
@@ -220,18 +233,21 @@ jQuery(document).ready(function ($) {
 		}).addClass('is-visible');
 	}
 
-	function closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected) {
+	function closeAnimate(parentListItem, finalTop, finalLeft, finalWidth, topSelected, leftSelected, widthSelected, quickViewHeight) {
+		console.log(quickViewHeight);
 		//close the quick view reverting the animation
 		$('.cd-quick-view').removeClass('add-content').velocity({
 			'top': finalTop + 'px',
 			'left': finalLeft + 'px',
 			'width': finalWidth + 'px',
+			'height': quickViewHeight + 'px',
 		}, 300, 'ease', function () {
 			$('body').removeClass('overlay-layer');
 			$('.cd-quick-view').removeClass('animate-width').velocity({
 				"top": topSelected,
 				"left": leftSelected,
 				"width": widthSelected,
+				// "height": heightSelected,
 			}, 500, 'ease', function () {
 				$('.cd-quick-view').removeClass('is-visible');
 				parentListItem.removeClass('empty-box');
@@ -251,6 +267,7 @@ jQuery(document).ready(function ($) {
 			"top": topSelected,
 			"left": leftSelected,
 			"width": widthSelected,
+			"height": heightSelected,
 		});
 	}
 });
