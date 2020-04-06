@@ -87,6 +87,9 @@ jQuery(document).ready(function ($) {
 		$('.cd-slider li.selected img').attr('src', url);
 		$('.cd-item-info h2').text(title);
 		$('.cd-item-info p').text(summary);
+		console.log($('.cd-item-info h2'));
+		console.log(title);
+		console.log(summary);
 	}
 
 	// Center modal with existing view
@@ -138,6 +141,8 @@ jQuery(document).ready(function ($) {
 		quickViewLeft = (windowWidth - quickViewWidth) / 2,
 			windowXS = windowS = windowM = windowL = windowXL = 0;
 
+
+
 		if (windowWidth < 768 && windowWidth > 479) {
 			windowS = windowWidth
 		} else if (windowWidth < 1023 && windowWidth > 767) {
@@ -156,20 +161,30 @@ jQuery(document).ready(function ($) {
 				console.log('large');
 				quickViewWidth = 900;
 				quickViewHeight = 450;
+				$('.container-img').css({
+					"height": quickViewHeight,
+				})
+			} else if (windowWidth > windowHeight) {
+				console.log('wide');
+				// quickViewWidth = windowWidth;
+				// quickViewHeight = windowHeight;
+
 			} else if (windowWidth < 1023 && windowWidth > 767) {
 				console.log('medium');
 				// widthSelected = (container width) * mq css width - margin
 				widthSelected = (windowWidth * 0.98) * 0.48 - ((windowWidth * 0.98) * 0.04);
-				console.log(widthSelected);
 				finalTop = 40;
 				quickViewLeft = finalTop;
 				quickViewWidth = windowWidth - (quickViewLeft * 2);
 				// modal height for medium screen
 				quickViewHeight = windowHeight - (2 * finalTop);
 				console.log("modal height: ", quickViewHeight);
+				// dynamically size img container so animation runs smoothly
+				$('.container-img').css({
+					"height": heightSelected,
+				})
 			} else {
 				console.log('small');
-				console.log(widthSelected);
 				// 400px is max size of image in css
 				widthSelected = 400;
 				finalTop = 20;
@@ -177,6 +192,10 @@ jQuery(document).ready(function ($) {
 				quickViewWidth = windowWidth - (quickViewLeft * 2);
 				quickViewHeight = windowHeight - (2 * finalTop);
 				console.log("modal height: ", quickViewHeight);
+				$('.container-img').css({
+					"height": heightSelected,
+					// "height": quickViewHeight,
+				})
 			}
 			openAnimate(parentListItem, topSelected, leftSelected, widthSelected, finalTop, finalLeft, finalWidth, quickViewLeft, quickViewWidth, quickViewHeight);
 		} else {

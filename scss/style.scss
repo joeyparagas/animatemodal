@@ -250,7 +250,9 @@ header {
 	/* quick view non available on small devices */
 	display: none;
 
-	@include MQ(XS) {
+	// overflow-y: scroll;
+	
+	// @include MQ(XS) {
 		display: block;
 		position: fixed;
 		max-width: 900px;
@@ -276,6 +278,10 @@ header {
 			box-shadow: 0 0 30px rgba(#000, .2);
 			// @include transition(box-shadow .3s);
 		}
+	// }
+
+	@include MQ(MAXXS) {
+		overflow-y: scroll;
 	}
 }
 
@@ -296,47 +302,18 @@ header {
 
 .cd-slider {
 	float: left;
-	
-
-	// @include MQ(S) {
-		
-		width: 100%;
-
-		li {
-			// display: flex;
-			// justify-content: center;
-			// align-items: center;
-			overflow: hidden;
-			height: 450px;
-			// position: relative;
-
-			&.selected {
-				// position:relative;
-				// display:flex;
-				// justify-content:center;
-				// align-items:center;
-				// overflow:hidden;
-				// display: inline-block;
-
-				// height: 450px;
-				// width: 100%;
-				// margin: auto;
-			}
-
-			.slider-img { 
-				// position: absolute;
-				// top: 0;
-				// bottom: 0;
-				// left: 0;
-				// right: 0;
-				// width: 100%;
-				// max-width: 100%;
-				// flex-shrink:0;
-				// min-width:100%;
-				// min-height:100%
-				// min-width: 100%;
-				// min-height: 100%
-				// margin: auto;
+	width: 100%;
+	li {
+			/*Center image in med/sm views*/
+			.container-img {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				
+				.slider-img {
+					// height: 200px;
+				}
 			}
 
 		.add-content & {
@@ -345,40 +322,34 @@ header {
 	}
 
 	@include MQ(L) {
-
 		li {
-			// position: absolute;
 			top: 0;
 			left: 0;
-			z-index: 1;
-	
-			img {
+			width: 100%;
+			z-index: 3;
+			
+			.container-img {
+				justify-content: left;
+				align-items: left;
 				display: block;
+				// height: 450px;
 				width: 100%;
 				max-width: 400px;
 			}
-	
-			&.selected {
-				// position: relative;
-				width: 100%;
-				z-index: 3;
-			}
 
-			.container-img {
-				position: relative;
-			}
-			
+			// .container-img {
+			// 	position: relative;
+			// }
 		}
 
 		.add-content & {
 			margin-right: 3em;
-	}
+		}
 	}
 }
 
 .cd-slider-navigation {
 	opacity: 0;
-	// width: 450px;
 
 	.add-content & {
 		opacity: 1;

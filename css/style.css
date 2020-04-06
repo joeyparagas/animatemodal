@@ -252,34 +252,38 @@ header h1 {
 .cd-quick-view {
   /* quick view non available on small devices */
   display: none;
+  display: block;
+  position: fixed;
+  max-width: 900px;
+  visibility: hidden;
+  /* Force Hardware Acceleration in WebKit */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: left, top, width;
+  z-index: 1;
 }
 
-@media only screen and (min-width: 0px) {
+.cd-quick-view::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.cd-quick-view.is-visible {
+  /* class added when user clicks on .cd-trigger */
+  visibility: visible;
+}
+
+.cd-quick-view.animate-width {
+  /* class added at the end of the first zoom-in animation */
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 479px) {
   .cd-quick-view {
-    display: block;
-    position: fixed;
-    max-width: 900px;
-    visibility: hidden;
-    /* Force Hardware Acceleration in WebKit */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    will-change: left, top, width;
-    z-index: 1;
-  }
-  .cd-quick-view::after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-  .cd-quick-view.is-visible {
-    /* class added when user clicks on .cd-trigger */
-    visibility: visible;
-  }
-  .cd-quick-view.animate-width {
-    /* class added at the end of the first zoom-in animation */
-    background-color: #ffffff;
-    -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    overflow-y: scroll;
   }
 }
 
@@ -300,7 +304,7 @@ header h1 {
   }
 }
 
-@media only screen and (max-width: 479) {
+@media only screen and (max-width: 479px) {
   .cd-slider-wrapper {
     display: block;
   }
@@ -312,8 +316,20 @@ header h1 {
 }
 
 .cd-slider li {
+  /*Center image in med/sm views*/
+}
+
+.cd-slider li .container-img {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   overflow: hidden;
-  height: 450px;
 }
 
 .add-content .cd-slider li {
@@ -324,19 +340,19 @@ header h1 {
   .cd-slider li {
     top: 0;
     left: 0;
-    z-index: 1;
-  }
-  .cd-slider li img {
-    display: block;
-    width: 100%;
-    max-width: 400px;
-  }
-  .cd-slider li.selected {
     width: 100%;
     z-index: 3;
   }
   .cd-slider li .container-img {
-    position: relative;
+    -webkit-box-pack: left;
+        -ms-flex-pack: left;
+            justify-content: left;
+    -webkit-box-align: left;
+        -ms-flex-align: left;
+            align-items: left;
+    display: block;
+    width: 100%;
+    max-width: 400px;
   }
   .add-content .cd-slider {
     margin-right: 3em;

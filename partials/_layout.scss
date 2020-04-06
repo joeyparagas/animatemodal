@@ -10,7 +10,7 @@ $XL:   1170px;
 
 @mixin MQ($canvas) {
   @if $canvas == MAXXS {
-   @media only screen and (max-width: 479) { @content; } 
+   @media only screen and (max-width: 479px) { @content; } 
   }
   @else if $canvas == MAXS {
     @media only screen and (max-width: 767px) { @content; } 
